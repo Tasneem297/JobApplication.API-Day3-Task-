@@ -21,11 +21,17 @@ public class ApplicationService : IApplicationService
         _jobRepository = jobRepository;
     }
 
+    public IEnumerable<JobCandidateApplication> GetAll()
+    {
+        var applications = _candidateRepository.Get().ToList();
+        return (IEnumerable<JobCandidateApplication>)applications;
+    }
     public async Task<CancelApplicationResult> CancelAsync(
         int applicationId,
         string userId,
         CancellationToken cancellationToken = default)
     {
+
         // Resolve the candidate that belongs to the authenticated user
         var candidate = _candidateRepository
             .Get()

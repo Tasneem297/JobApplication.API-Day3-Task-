@@ -28,6 +28,9 @@ public static class DependencyInjection
         services.AddScoped<IApplicationService, ApplicationService>();
         services.AddScoped<IAuthRepository, AuthRepository>();
         services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+
+        services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(IJobService).Assembly));
+
         services.AddHttpContextAccessor()
             .AddAuthConfig(configuration)
             .AddSwaggerServices(); 
