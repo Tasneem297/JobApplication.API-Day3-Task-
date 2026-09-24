@@ -19,5 +19,11 @@ namespace JobApplication.Domain.Entities
         public DateTime AppliedAt { get; set; }
         public DateTime StatusUpdatedAt { get; set; }
         public DateTime? CancelledAt { get; set; }
+
+        public void UpdateStatus(JobApplicationStatus status)
+        {
+            JobApplicationStatus = status;
+            StatusUpdatedAt = DateTime.UtcNow;
+        }
     }
 }

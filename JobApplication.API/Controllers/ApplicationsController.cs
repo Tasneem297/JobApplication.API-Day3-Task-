@@ -1,5 +1,7 @@
 using JobApplication.Application.DTOs;
+using JobApplication.Application.Features.JobCandidateApplications.Commands.CancelApplication;
 using JobApplication.Application.Interfaces;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -11,10 +13,12 @@ namespace JobApplication.API.Controllers;
 [Authorize]
 public class ApplicationsController : ControllerBase
 {
+    private readonly IMediator _mediator;
     private readonly IApplicationService _applicationService;
 
-    public ApplicationsController(IApplicationService applicationService)
+    public ApplicationsController(IMediator mediator, IApplicationService applicationService)
     {
+        _mediator = mediator;
         _applicationService = applicationService;
     }
 
@@ -26,7 +30,7 @@ public class ApplicationsController : ControllerBase
         if (userId is null)
             return Unauthorized();
 
-        var result = await _applicationService.CancelAsync(id, userId, cancellationToken);
+        var result = await _mediator.Send(new CancelApplicationCommand(id, userId), cancellationToken);
 
         return result switch
         {
